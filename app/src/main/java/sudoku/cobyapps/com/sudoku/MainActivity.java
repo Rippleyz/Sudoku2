@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             linearLayout.addView(columnLayout,linearLayoutParams);
         }
+//xdd
         }
 
     @Override
