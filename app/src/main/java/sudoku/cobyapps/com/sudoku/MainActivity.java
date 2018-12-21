@@ -28,7 +28,6 @@ import sudoku.cobyapps.com.sudoku.Fragments.CustomSudokuFragment;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, InterFragmentCommunicator {
     private SudokuGridView sudokuGridView;
     private boolean isOnNote = false;
-    private SudokuEngine sudokuEngine;
     private ArrayList<String> sudokus;
     private int next;
     private static final String KEY_CURRENT_SUDOKU = "KEY_CURRENT_SUDOKU";
