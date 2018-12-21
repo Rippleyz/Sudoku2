@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int MENU_ON_SUDOKU_PANEL = 0;
     public static final int MENU_ON_CUSTOM_DIFFICULTY = 1;
     private int currentMenu;
+    private DatabaseAdapter databaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             linearLayout.addView(columnLayout,linearLayoutParams);
         }
+        databaseAdapter = DatabaseAdapter.getInstance(this);
         }
 
     @Override
@@ -224,11 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.save){
-
-        }else if(item.getItemId() == R.id.load){
-
-        }else if(item.getItemId() == R.id.easy){
+        if(item.getItemId() == R.id.easy){
 
         }else if(item.getItemId() == R.id.medium){
 

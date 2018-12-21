@@ -10,6 +10,4 @@
             <item android:title="Custom" android:id="@+id/custom"/>
         </menu>
     </item>
-    <item android:title="Save sudoku" android:id="@+id/save"></item>
-    <item android:title="Load sudoku" android:id="@+id/load"></item>
 </menu>
