@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sudoku.cobyapps.com.sudoku.CustomSudokuRecyclerViewAdapter;
+import sudoku.cobyapps.com.sudoku.InterFragmentCommunicator;
+import sudoku.cobyapps.com.sudoku.MainActivity;
 import sudoku.cobyapps.com.sudoku.R;
 
 public class CustomSudokuFragment extends Fragment {
     private RecyclerView recyclerView;
     private CustomSudokuRecyclerViewAdapter recyclerViewAdapter;
+    private InterFragmentCommunicator interFragmentCommunicator;
     public static final String TAG = "CustomSudokuFragment";
     @Nullable
     @Override
@@ -27,6 +30,7 @@ public class CustomSudokuFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        interFragmentCommunicator = (MainActivity) getActivity();
         recyclerViewAdapter = new CustomSudokuRecyclerViewAdapter(getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -36,5 +40,12 @@ public class CustomSudokuFragment extends Fragment {
     }
     public CustomSudokuRecyclerViewAdapter getCustomSudokuRecyclerViewAdapter(){
         return recyclerViewAdapter;
+    }
+
+    @Override
+    public void onDestroy() {
+        interFragmentCommunicator.setCurrentMenu(MainActivity.MENU_ON_SUDOKU_PANEL);
+        interFragmentCommunicator.invalidateMenu();
+        super.onDestroy();
     }
 }

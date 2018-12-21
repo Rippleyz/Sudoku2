@@ -67,16 +67,16 @@ public class CustomSudokuRecyclerViewAdapter extends RecyclerView.Adapter {
            return textView;
         }
     }
-    public String getLowerBoundOfNumberOfUnknowns(){
-        return editTexts.get(0).getText().toString();
+    public int getLowerBoundOfNumberOfUnknowns(){
+        return Integer.parseInt(editTexts.get(0).getText().toString());
     }
-    public String getUpperBoundOfNumberOfUnknowns(){
-        return editTexts.get(1).getText().toString();
+    public int getUpperBoundOfNumberOfUnknowns(){
+        return Integer.parseInt(editTexts.get(1).getText().toString());
     }
-    public String getLowerBoundOfDifficultyScore (){
-        return editTexts.get(2).getText().toString();
+    public int getLowerBoundOfDifficultyScore (){
+        return Integer.parseInt(editTexts.get(2).getText().toString());
     }
-    public String getUpperBoundOfDifficultyScore(){
-        return editTexts.get(3).getText().toString();
+    public int getUpperBoundOfDifficultyScore(){
+        return Integer.parseInt(editTexts.get(3).getText().toString());
     }
 }

@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> sudokus;
     private int next;
     private static final String KEY_CURRENT_SUDOKU = "KEY_CURRENT_SUDOKU";
-    private static final int MENU_ON_SUDOKU_PANEL = 0;
-    private static final int MENU_ON_CUSTOM_DIFFICULTY = 1;
+    public static final int MENU_ON_SUDOKU_PANEL = 0;
+    public static final int MENU_ON_CUSTOM_DIFFICULTY = 1;
     private int currentMenu;
 
     @Override
@@ -244,6 +244,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentTransaction.commit();
             currentMenu = MENU_ON_CUSTOM_DIFFICULTY;
             invalidateOptionsMenu();
+        }else if (item.getItemId() == R.id.generate){
+            CustomSudokuFragment customSudokuFragment = (CustomSudokuFragment)
+                    getSupportFragmentManager().findFragmentByTag(CustomSudokuFragment.TAG);
+            CustomSudokuRecyclerViewAdapter recyclerViewAdapter =
+                    customSudokuFragment.getCustomSudokuRecyclerViewAdapter();
         }
         return true;
     }
@@ -263,5 +268,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void invalidateMenu() {
         invalidateOptionsMenu();
+    }
+
+    @Override
+    public void setCurrentMenu(int currentMenu) {
+        this.currentMenu = currentMenu;
     }
 }
