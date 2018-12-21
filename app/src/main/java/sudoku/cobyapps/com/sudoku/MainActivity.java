@@ -5,8 +5,12 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,17 +23,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import sudoku.cobyapps.com.sudoku.Fragments.CustomSudokuFragment;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, InterFragmentCommunicator {
     private SudokuGridView sudokuGridView;
     private boolean isOnNote = false;
-    private SudokuEngine sudokuEngine;
     private ArrayList<String> sudokus;
     private int next;
     private static final String KEY_CURRENT_SUDOKU = "KEY_CURRENT_SUDOKU";
+    public static final int MENU_ON_SUDOKU_PANEL = 0;
+    public static final int MENU_ON_CUSTOM_DIFFICULTY = 1;
+    private int currentMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        currentMenu = MENU_ON_SUDOKU_PANEL;
         InputStream inputStream = getResources().openRawResource(R.raw.puzzles50);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = null;
@@ -109,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             linearLayout.addView(columnLayout,linearLayoutParams);
         }
-//xdd
         }
 
     @Override
@@ -204,5 +213,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putString(KEY_CURRENT_SUDOKU,currentSudokuString);
         editor.commit();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu_difficulty, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.save){
+
+        }else if(item.getItemId() == R.id.load){
+
+        }else if(item.getItemId() == R.id.easy){
+
+        }else if(item.getItemId() == R.id.medium){
+
+        }else if(item.getItemId() == R.id.difficult){
+
+        }else if(item.getItemId() == R.id.expert){
+
+        }else if(item.getItemId() == R.id.custom){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.main_layout, new CustomSudokuFragment(), CustomSudokuFragment.TAG);
+            fragmentTransaction.addToBackStack(CustomSudokuFragment.TAG);
+            fragmentTransaction.commit();
+            currentMenu = MENU_ON_CUSTOM_DIFFICULTY;
+            invalidateOptionsMenu();
+        }else if (item.getItemId() == R.id.generate){
+            CustomSudokuFragment customSudokuFragment = (CustomSudokuFragment)
+                    getSupportFragmentManager().findFragmentByTag(CustomSudokuFragment.TAG);
+            CustomSudokuRecyclerViewAdapter recyclerViewAdapter =
+                    customSudokuFragment.getCustomSudokuRecyclerViewAdapter();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(currentMenu == MENU_ON_CUSTOM_DIFFICULTY){
+            menu.clear();
+            getMenuInflater().inflate(R.menu.custom_sudoku_menu, menu);
+        }else if(currentMenu == MENU_ON_SUDOKU_PANEL){
+            menu.clear();
+            getMenuInflater().inflate(R.menu.options_menu_difficulty, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public void invalidateMenu() {
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void setCurrentMenu(int currentMenu) {
+        this.currentMenu = currentMenu;
     }
 }
