@@ -59,6 +59,15 @@ public class DatabaseAdapter {
                 null,
                 null);
     }
+    public Cursor query(int databaseId){
+        return database.query(SQLiteHelper.NAME_TABLE_SAVED_SUDOKUS,
+                null,
+                SQLiteHelper.COLUMN_ID+" = ?",
+                new String [] {databaseId+""},
+                null,
+                null,
+                null);
+    }
     @NonNull
     private ContentValues getContentValues(SudokuDatabaseDataHolder databaseDataHolder) {
         ContentValues contentValues = new ContentValues();

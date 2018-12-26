@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        // STATE PATTERN
         if(currentMenu == MENU_ON_CUSTOM_DIFFICULTY){
             menu.clear();
             getMenuInflater().inflate(R.menu.custom_sudoku_menu, menu);
@@ -319,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         databaseAdapter.insert(getSudokuDatabaseDataHolder(sudokuGridView.getDataHolder().getGrid()));
     }
 
-
     public static ViewGroup getActionBar(View view) {
         try {
             if (view instanceof ViewGroup) {
@@ -340,6 +340,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return null;
     }
+    @Override
     public SudokuDatabaseDataHolder getSudokuDatabaseDataHolder (SudokuCellDataComponent [][] dataComponents) {
         String sudoku = "";
         String notes = "";
@@ -369,16 +370,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public FragmentManager getTheFragmentManager() {
         return getSupportFragmentManager();
     }
-/*
-@Override
-    public SudokuCellDataComponent[][] getSudokuFromCursor(Cursor cursor, int position) {
-        cursor.moveToPosition(position);
-        String sudoku = cursor.getString(DatabaseAdapter.INDEX_SUDOKU);
-        String isGivens = cursor.getString(DatabaseAdapter.INDEX_IS_GIVENS);
-        String notes = cursor.getString(DatabaseAdapter.INDEX_NOTES);
-
-    }
-    private SudokuCellDataComponent [][] getSudokuCellDataComponentFromDataStrings (String sudoku, String isGivens, String notes){
+    @Override
+    public SudokuCellDataComponent [][] getSudokuCellDataComponentFromDataStrings (String sudoku, String isGivens, String notes){
+        SudokuCellDataComponent [][] sudokuCellDataComponents = new SudokuCellDataComponent[9][9];
         String [] notesForEachCell=null;
         if(notes!=null){
             notesForEachCell = notes.split(" / ");
@@ -397,9 +391,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sudokuCellDataComponent.setNotes(notesForEachCell[i]);
             }
             sudokuCellDataComponent.setNumber(Integer.parseInt(sudoku.charAt(i)+""));
-            sudoku[i/9][i%9] = sudokuCellDataComponent;
+            sudokuCellDataComponents[i/9][i%9] = sudokuCellDataComponent;
         }
+        return sudokuCellDataComponents;
     }
- */
 
+    @Override
+    public void setCurrentSudoku(SudokuCellDataComponent[][] dataComponents) {
+        sudokuGridView.getDataHolder().setGrid(dataComponents);
     }
+}
