@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Easy" android:id="@+id/easy"/>
+    <item android:title="Medium"  android:id="@+id/medium"/>
+    <item android:title="Difficult" android:id="@+id/difficult"/>
+    <item android:title="Expert" android:id="@+id/expert"/>
+    <item android:title="Custom" android:id="@+id/custom"/>
+</menu>

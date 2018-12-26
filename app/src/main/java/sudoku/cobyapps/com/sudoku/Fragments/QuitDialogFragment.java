@@ -1,16 +1,39 @@
 package sudoku.cobyapps.com.sudoku.Fragments;
 
-import android.os.Bundle;
+import android.view.View;
 
 public class QuitDialogFragment extends DialogFragmentWithTwoButtons {
     private static final String TITLE = "Confirm quit?";
     private static final String LEFT_BUTTON_TEXT = "Yes";
     private static final String RIGHT_BUTTON_TEXT = "No";
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        title.setText(TITLE);
-        leftButton.setText(LEFT_BUTTON_TEXT);
-        rightButton.setText(RIGHT_BUTTON_TEXT);
-        super.onActivityCreated(savedInstanceState);
+    protected String getTitleText() {
+        return TITLE;
+    }
+
+    @Override
+    protected String getRightButtonText() {
+        return RIGHT_BUTTON_TEXT;
+    }
+
+    @Override
+    protected String getLeftButtonText() {
+        return LEFT_BUTTON_TEXT;
+    }
+
+    @Override
+    protected void onLeftButtonClick() {
+
+    }
+
+    @Override
+    protected void onRightButtonClick() {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

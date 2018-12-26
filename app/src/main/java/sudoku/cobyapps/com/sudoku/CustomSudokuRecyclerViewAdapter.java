@@ -25,7 +25,7 @@ public class CustomSudokuRecyclerViewAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(inflater.inflate(R.layout.list_element_layout, parent, false));
+        return new ViewHolder(inflater.inflate(R.layout.list_element_with_text_view_and_edit_text, parent, false));
     }
 
     @Override

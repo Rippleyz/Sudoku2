@@ -16,6 +16,22 @@ public class SudokuConfiguration {
         this.difficultyUpperBoundary = builder.difficultyUpperBound;
     }
 
+    public int getNumberOfUnknownsLowerBound() {
+        return numberOfUnknownsLowerBound;
+    }
+
+    public int getNumberOfUnknownsUpperBound() {
+        return numberOfUnknownsUpperBound;
+    }
+
+    public int getDifficultyLowerBoundary() {
+        return difficultyLowerBoundary;
+    }
+
+    public int getDifficultyUpperBoundary() {
+        return difficultyUpperBoundary;
+    }
+
     public static class Builder {
 
         private int numberOfUnknownsLowerBound;

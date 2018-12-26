@@ -1,17 +1,23 @@
 package sudoku.cobyapps.com.sudoku;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -21,21 +27,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 import sudoku.cobyapps.com.sudoku.Fragments.CustomSudokuFragment;
+import sudoku.cobyapps.com.sudoku.TimeObserver.IObserver;
+import sudoku.cobyapps.com.sudoku.TimeObserver.StringTimer;
+import sudoku.cobyapps.com.sudoku.TimeObserver.TimerPanel;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, InterFragmentCommunicator {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        InterFragmentCommunicator, SudokuDataConverter{
     private SudokuGridView sudokuGridView;
     private boolean isOnNote = false;
-    private ArrayList<String> sudokus;
     private int next;
     private static final String KEY_CURRENT_SUDOKU = "KEY_CURRENT_SUDOKU";
+    private static final String KEY_IS_GIVEN = "KEY_IS_GIVEN";
+    private static final String KEY_NOTES = "KEY_NOTES";
     public static final int MENU_ON_SUDOKU_PANEL = 0;
     public static final int MENU_ON_CUSTOM_DIFFICULTY = 1;
+    public static final int MENU_NEW_SUDOKU = 2;
     private int currentMenu;
     private DatabaseAdapter databaseAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String line = null;
         SudokuDataHolder dataHolder = new SudokuDataHolder();
         next = 1;
-        sudokus = new ArrayList<String>();
         SharedPreferences sharedPreferences = getSharedPreferences("sudoku.cobyapps.com.sudoku", MODE_PRIVATE);
-        SudokuCellDataComponent [][] grid = new SudokuCellDataComponent[9][9];
-        if(true || sharedPreferences.getString(KEY_CURRENT_SUDOKU,null)==null){
+        SudokuCellDataComponent [][] currentSudoku = new SudokuCellDataComponent[9][9];
+        if(sharedPreferences.getString(KEY_CURRENT_SUDOKU,null)==null){
             while(true){
                 try {
                     line = reader.readLine();
@@ -59,29 +68,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(line==null){
                     break;
                 }
-                sudokus.add(line);
-            }
-
-            for (int i = 0 ; i < 81 ; i++){
-                SudokuCellDataComponent sudokuCellDataComponent = new SudokuCellDataComponent(Integer.parseInt(sudokus.get(0).charAt(i)+""),"");
-                if(Integer.parseInt(sudokus.get(0).charAt(i)+"")!=0){
-                    sudokuCellDataComponent.setIsGiven(true);
+                for(int i = 0 ; i < 81 ; i++) {
+                    SudokuCellDataComponent dataComponent = new SudokuCellDataComponent();
+                    dataComponent.setNumber(Integer.parseInt(line.charAt(i)+""));
+                    if(Integer.parseInt(line.charAt(i)+"") == 0){
+                        dataComponent.setIsGiven(false);
+                    }else{
+                        dataComponent.setIsGiven(true);
+                    }
+                    currentSudoku[i/9][i%9] = dataComponent;
                 }
-                grid[i/9][i%9] = sudokuCellDataComponent;
             }
         }else{
-            sudokus = new ArrayList<String>();
-            sudokus.add(sharedPreferences.getString(KEY_CURRENT_SUDOKU,null));
-            for (int i = 0 ; i < 81 ; i++){
-                SudokuCellDataComponent sudokuCellDataComponent = new SudokuCellDataComponent(Integer.parseInt(sudokus.get(0).charAt(i)+""),"");
-                if(Integer.parseInt(sudokus.get(0).charAt(i)+"")!=0){
+            String currentSudokuString = sharedPreferences.getString(KEY_CURRENT_SUDOKU,null);
+            String isGivensString = sharedPreferences.getString(KEY_IS_GIVEN, null);
+            String notesString = sharedPreferences.getString(KEY_NOTES, null);
+            String [] notesForEachCell=null;
+            if(notesString!=null){
+                notesForEachCell = notesString.split(" / ");
+                notesForEachCell[80] = notesForEachCell[80]
+                        .replace("/", "")
+                        .replace(" ", "");
+            }
+            for(int i = 0; i < 81 ; i++){
+                SudokuCellDataComponent sudokuCellDataComponent = new SudokuCellDataComponent();
+                if(isGivensString != null && isGivensString.charAt(i)=='1'){
                     sudokuCellDataComponent.setIsGiven(true);
+                }else{
+                    sudokuCellDataComponent.setIsGiven(false);
                 }
-                grid[i/9][i%9] = sudokuCellDataComponent;
+                if(notesForEachCell!=null){
+                    sudokuCellDataComponent.setNotes(notesForEachCell[i]);
+                }
+                sudokuCellDataComponent.setNumber(Integer.parseInt(currentSudokuString.charAt(i)+""));
+                currentSudoku[i/9][i%9] = sudokuCellDataComponent;
             }
         }
-        dataHolder.setGrid(grid);
+        dataHolder.setGrid(currentSudoku);
+
         RelativeLayout mainLayout = findViewById(R.id.main_layout);
+
+        RelativeLayout timerPanelLayout = (RelativeLayout)
+                ((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                        .inflate(R.layout.timer_panel,mainLayout,false);
+
+        StringTimer timer = new StringTimer();
+        IObserver iObserver = new TimerPanel(timerPanelLayout, this);
+        timer.addObserver(iObserver);
+        timer.execute();
         FrameLayout frameLayout = new FrameLayout(this);
         frameLayout.setId(getResources().getInteger(R.integer.frame_id));
         sudokuGridView = new SudokuGridView(this,dataHolder);
@@ -91,7 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-        mainLayout.addView(frameLayout,new RelativeLayout.LayoutParams(width,width+3));
+        mainLayout.addView(timerPanelLayout, timerPanelLayout.getLayoutParams());
+        RelativeLayout.LayoutParams layoutParamsForFrameLayout = new RelativeLayout.LayoutParams(width,width+3);
+        layoutParamsForFrameLayout.addRule(RelativeLayout.BELOW, timerPanelLayout.getId());
+        mainLayout.addView(frameLayout, layoutParamsForFrameLayout);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width,height-(width+3));
         layoutParams.addRule(RelativeLayout.BELOW,frameLayout.getId());
         LinearLayout linearLayout = new LinearLayout(this);
@@ -174,47 +211,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button = null;
             }
             sudokuGridView.invalidate();
-        }else if ((((Button)view).getText().toString().toLowerCase().equals("new"))){
-            SudokuDataHolder holder = new SudokuDataHolder();
-            SudokuCellDataComponent [][] grid = new SudokuCellDataComponent[9][9];
-            for (int i = 0 ; i < 81 ; i++){
-                SudokuCellDataComponent dataComponent = new SudokuCellDataComponent(Integer.parseInt(sudokus.get(next).charAt(i)+""),"");
-                if(Integer.parseInt(sudokus.get(next).charAt(i)+"")!=0){
-                   dataComponent.setIsGiven(true);
+        }else if((((Button)view).getText().toString().toLowerCase().equals("new"))){
+            currentMenu = MENU_NEW_SUDOKU;
+            invalidateOptionsMenu();
+            Toolbar toolbar = (Toolbar) getActionBar(getWindow().getDecorView());
+            toolbar.showOverflowMenu();
+            getSupportActionBar().addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
+                @Override
+                public void onMenuVisibilityChanged(boolean isVisible) {
+                    if(!isVisible && currentMenu == MENU_NEW_SUDOKU){
+                        currentMenu = MENU_ON_SUDOKU_PANEL;
+                        invalidateMenu();
+                    }
                 }
-                grid[i/9][i%9] = dataComponent;
-            }
-            holder.setGrid(grid);
-            sudokuGridView.setDataHolder(holder);
-            sudokuGridView.invalidate();
-            if(next+1 == sudokus.size()){
-                next = 0;
-            }else{
-                next++;
-            }
+            });
         }
     }
-    public static int dpToPx(int dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-    }
-
-    public static int pxToDp(int px) {
-        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
-    }
-
     @Override
     protected void onDestroy() {
-        SharedPreferences.Editor editor = getSharedPreferences("sudoku.cobyapps.com.sudoku",MODE_PRIVATE).edit();
-        String currentSudokuString = "";
-        SudokuCellDataComponent [][] dataComponents = sudokuGridView.getDataHolder().getGrid();
-        for(int i = 0 ; i < dataComponents.length ; i++){
-            int row = i/9;
-            int column = i%9;
-            currentSudokuString += dataComponents[row][column].getNumber();
-        }
-        editor.putString(KEY_CURRENT_SUDOKU,currentSudokuString);
-        editor.commit();
+        saveCurrentSudokuToSharedPreferences();
         super.onDestroy();
+    }
+
+    private void saveCurrentSudokuToSharedPreferences() {
+        SharedPreferences.Editor editor = getSharedPreferences("sudoku.cobyapps.com.sudoku",MODE_PRIVATE).edit();
+        SudokuDatabaseDataHolder dataHolder = getSudokuDatabaseDataHolder(sudokuGridView.getDataHolder().getGrid());
+        editor.putString(KEY_CURRENT_SUDOKU,dataHolder.getSudoku());
+        editor.putString(KEY_IS_GIVEN, dataHolder.getIsGivens());
+        editor.putString(KEY_NOTES, dataHolder.getNotes());
+        editor.commit();
     }
 
     @Override
@@ -245,7 +270,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             CustomSudokuFragment customSudokuFragment = (CustomSudokuFragment)
                     getSupportFragmentManager().findFragmentByTag(CustomSudokuFragment.TAG);
             CustomSudokuRecyclerViewAdapter recyclerViewAdapter =
-                    customSudokuFragment.getCustomSudokuRecyclerViewAdapter();
+                    (CustomSudokuRecyclerViewAdapter) customSudokuFragment.getCustomSudokuRecyclerViewAdapter();
+        }else if (item.getItemId() == R.id.save_sudoku){
+            if(databaseAdapter.query().getCount() > 0){
+                SimpleDialogFragmentFactory.
+                        createDialogFragment(SimpleDialogFragmentFactory.DIALOG_FRAGMENT_OVERWRITE)
+                        .show(getSupportFragmentManager(), null);
+            }else{
+                saveCurrentSudokuToDatabase();
+            }
+        }else if (item.getItemId() == R.id.load_sudoku){
+            Cursor cursor = databaseAdapter.query();
+            String string = "";
+            while (cursor.moveToNext()){
+                string += cursor.getString(1)+"\n"+cursor.getString(2)+"\n"+cursor.getString(3);
+            }
+            Log.wtf("DATA",string);
         }
         return true;
     }
@@ -258,6 +298,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(currentMenu == MENU_ON_SUDOKU_PANEL){
             menu.clear();
             getMenuInflater().inflate(R.menu.options_menu_difficulty, menu);
+        }else if(currentMenu == MENU_NEW_SUDOKU){
+            menu.clear();
+            getMenuInflater().inflate(R.menu.new_sudoku_menu, menu);
         }
         return true;
     }
@@ -270,5 +313,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void setCurrentMenu(int currentMenu) {
         this.currentMenu = currentMenu;
+    }
+
+    @Override
+    public void saveCurrentSudokuToDatabase() {
+        databaseAdapter.insert(getSudokuDatabaseDataHolder(sudokuGridView.getDataHolder().getGrid()));
+    }
+
+
+    public static ViewGroup getActionBar(View view) {
+        try {
+            if (view instanceof ViewGroup) {
+                ViewGroup viewGroup = (ViewGroup) view;
+                if (viewGroup instanceof android.support.v7.widget.Toolbar) {
+                    return viewGroup;
+                }
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    ViewGroup actionBar = getActionBar(viewGroup.getChildAt(i));
+                    if (actionBar != null) {
+                        return actionBar;
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public SudokuDatabaseDataHolder getSudokuDatabaseDataHolder (SudokuCellDataComponent [][] dataComponents) {
+        String sudoku = "";
+        String notes = "";
+        String isGivens = "";
+        for(int i = 0 ; i < 81 ; i++){
+            int row = i/9;
+            int column = i%9;
+            SudokuCellDataComponent dataComponent = dataComponents[row][column];
+            if(dataComponent.getIsGiven()){
+                isGivens += "1";
+            }else{
+                isGivens += "0";
+            }
+            sudoku += dataComponent.getNumber();
+            notes += dataComponent.getNotes() + " /";
+            if(i!=80){
+                notes += " ";
+            }
+        }
+        return new SudokuDatabaseDataHolder(sudoku, isGivens, notes);
+    }
+    public DatabaseAdapter getDatabaseAdapter (){
+        return databaseAdapter;
     }
 }

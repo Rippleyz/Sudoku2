@@ -1,21 +1,14 @@
-package sudoku.cobyapps.com.sudoku;
+package sudoku.cobyapps.com.sudoku.TimeObserver;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class StringTimer extends AbstractTimer {
+	private Timer timer;
 	private int time = 0;
 	private String stringTime = "00:00";
-
 	public StringTimer() {
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				++time;
-				modifyStringAsTime();
-			}
-		}, 1000, 1000);
+		timer = new Timer();
 	}
 
 	private void modifyStringAsTime() {
@@ -26,11 +19,15 @@ public class StringTimer extends AbstractTimer {
 	public String getStringTime() {
 		return stringTime;
 	}
-
 	@Override
 	public void execute() {
-		while (true) {
-			notifyObservers();
-		}
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				++time;
+				modifyStringAsTime();
+				notifyObservers();
+			}
+		}, 0, 1000);
 	}
 }
