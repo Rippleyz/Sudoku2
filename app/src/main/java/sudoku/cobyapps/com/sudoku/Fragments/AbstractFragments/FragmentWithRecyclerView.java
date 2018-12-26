@@ -1,4 +1,4 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,5 +35,5 @@ public abstract class FragmentWithRecyclerView extends Fragment {
     public RecyclerView.Adapter getCustomSudokuRecyclerViewAdapter(){
         return recyclerViewAdapter;
     }
-    abstract RecyclerView.Adapter getRecyclerViewAdapter();
+    protected abstract RecyclerView.Adapter getRecyclerViewAdapter();
 }

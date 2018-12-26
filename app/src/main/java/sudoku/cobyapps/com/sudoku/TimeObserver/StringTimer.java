@@ -12,6 +12,7 @@ public class StringTimer extends AbstractTimer {
 	}
 
 	private void modifyStringAsTime() {
+		//TODO : SHOW AS HOURS : MINUTES : SECONDS
 		stringTime = String.format("%d%d:%d%d", (time % 3600) / 600, (time % 600) / 60, (time % 60) / 10, time % 10);
 	}
 

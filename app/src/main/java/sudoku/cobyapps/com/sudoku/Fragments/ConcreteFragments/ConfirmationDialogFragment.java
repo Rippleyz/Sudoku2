@@ -1,4 +1,6 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments;
+
+import sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments.DialogFragmentWithTwoButtons;
 
 public class ConfirmationDialogFragment extends DialogFragmentWithTwoButtons {
     private static final String TITLE = "Confirm delete?";

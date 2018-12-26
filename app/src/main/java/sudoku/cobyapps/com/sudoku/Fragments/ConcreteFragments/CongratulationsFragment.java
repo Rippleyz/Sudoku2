@@ -1,6 +1,8 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments;
 
 import android.view.View;
+
+import sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments.DialogFragmentWithOneButton;
 
 public class CongratulationsFragment extends DialogFragmentWithOneButton {
     private static final String TITLE = "Congratulations";

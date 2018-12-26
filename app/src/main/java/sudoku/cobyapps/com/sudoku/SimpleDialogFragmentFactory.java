@@ -3,10 +3,10 @@ package sudoku.cobyapps.com.sudoku;
 
 import android.support.v4.app.DialogFragment;
 
-import sudoku.cobyapps.com.sudoku.Fragments.ConfirmationDialogFragment;
-import sudoku.cobyapps.com.sudoku.Fragments.CongratulationsFragment;
-import sudoku.cobyapps.com.sudoku.Fragments.OverWriteConfirmationFragment;
-import sudoku.cobyapps.com.sudoku.Fragments.QuitDialogFragment;
+import sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments.ConfirmationDialogFragment;
+import sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments.CongratulationsFragment;
+import sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments.OverWriteConfirmationFragment;
+import sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments.QuitDialogFragment;
 
 public class SimpleDialogFragmentFactory {
     public static final String DIALOG_FRAGMENT_CONFIRM_DELETE = "DIALOG_FRAGMENT_CONFIRM_DELETE";

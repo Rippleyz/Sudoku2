@@ -1,8 +1,9 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments;
 
 import android.support.v7.widget.RecyclerView;
 
-import sudoku.cobyapps.com.sudoku.CustomSudokuRecyclerViewAdapter;
+import sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments.FragmentWithRecyclerView;
+import sudoku.cobyapps.com.sudoku.RecyclerViewAdapters.CustomSudokuRecyclerViewAdapter;
 import sudoku.cobyapps.com.sudoku.MainActivity;
 
 public class CustomSudokuFragment extends FragmentWithRecyclerView {

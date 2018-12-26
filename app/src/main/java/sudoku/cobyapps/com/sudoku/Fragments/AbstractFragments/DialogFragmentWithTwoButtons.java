@@ -1,4 +1,4 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,15 +10,19 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import sudoku.cobyapps.com.sudoku.InterFragmentCommunicator;
+import sudoku.cobyapps.com.sudoku.MainActivity;
 import sudoku.cobyapps.com.sudoku.R;
 
 public abstract class DialogFragmentWithTwoButtons extends DialogFragment implements View.OnClickListener {
     protected TextView title;
     protected Button leftButton;
     protected Button rightButton;
+    protected InterFragmentCommunicator interFragmentCommunicator;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        interFragmentCommunicator = (MainActivity)getActivity();
         View rootView = inflater.inflate(R.layout.fragment_layout_with_two_button, container, false);
         title = rootView.findViewById(R.id.title);
         leftButton = rootView.findViewById(R.id.left_button);
@@ -29,6 +33,7 @@ public abstract class DialogFragmentWithTwoButtons extends DialogFragment implem
         title.setText(getTitleText());
         leftButton.setText(getLeftButtonText());
         rightButton.setText(getRightButtonText());
+
         return rootView;
     }
     @Override

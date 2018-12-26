@@ -38,6 +38,7 @@ public class DatabaseAdapter {
         return database.update(SQLiteHelper.NAME_TABLE_SAVED_SUDOKUS,
                 contentValues, SQLiteHelper.COLUMN_ID+"=?",
                 new String [] {id+""});
+        //TODO : GET TIME, TIME ELAPSED & UPDATE IT
     }
     public Cursor query(){
         return database.query(SQLiteHelper.NAME_TABLE_SAVED_SUDOKUS,
@@ -54,6 +55,7 @@ public class DatabaseAdapter {
         contentValues.put(SQLiteHelper.COLUMN_SUDOKU, databaseDataHolder.getSudoku());
         contentValues.put(SQLiteHelper.COLUMN_IS_GIVENS, databaseDataHolder.getIsGivens());
         contentValues.put(SQLiteHelper.COLUMN_NOTES, databaseDataHolder.getNotes());
+        //TODO : GET TIME, TIME ELAPSED & INSERT IT
         return contentValues;
     }
     static class SQLiteHelper extends SQLiteOpenHelper {
@@ -65,6 +67,7 @@ public class DatabaseAdapter {
         private static final String COLUMN_NOTES = "COLUMN_NOTES";
         private static final String COLUMN_IS_GIVENS = "COLUMN_IS_GIVENS";
         private static final String COLUMN_DATE = "COLUMN_DATE";
+        private static final String COLUMN_TIME_ELAPSED = "COLUMN_TIME_ELAPSED";
 
         public SQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
             super(context, NAME_DATABASE, null, VERSION_DATABASE);
@@ -79,7 +82,8 @@ public class DatabaseAdapter {
             try{
                 sqLiteDatabase.execSQL("CREATE TABLE "+NAME_TABLE_SAVED_SUDOKUS+"" +
                         " ( "+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        " "+COLUMN_SUDOKU+" TEXT, "+COLUMN_IS_GIVENS+" TEXT, "+COLUMN_NOTES+" TEXT);");
+                        " "+COLUMN_SUDOKU+" TEXT, "+COLUMN_IS_GIVENS+" TEXT, "+COLUMN_NOTES+" TEXT," +
+                        " "+COLUMN_DATE+" TEXT, "+COLUMN_TIME_ELAPSED+" TEXT);");
                 Log.wtf("OK","SUCCESS");
             }catch (Exception e){
                 Log.wtf("ERROR","CREATION FAILED");

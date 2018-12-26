@@ -1,6 +1,8 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments;
 
 import android.view.View;
+
+import sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments.DialogFragmentWithTwoButtons;
 
 public class QuitDialogFragment extends DialogFragmentWithTwoButtons {
     private static final String TITLE = "Confirm quit?";

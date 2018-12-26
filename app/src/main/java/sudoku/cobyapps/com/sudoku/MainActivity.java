@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import sudoku.cobyapps.com.sudoku.Fragments.CustomSudokuFragment;
+import sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments.CustomSudokuFragment;
+import sudoku.cobyapps.com.sudoku.RecyclerViewAdapters.CustomSudokuRecyclerViewAdapter;
 import sudoku.cobyapps.com.sudoku.TimeObserver.IObserver;
 import sudoku.cobyapps.com.sudoku.TimeObserver.StringTimer;
 import sudoku.cobyapps.com.sudoku.TimeObserver.TimerPanel;
@@ -364,5 +366,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public DatabaseAdapter getDatabaseAdapter (){
         return databaseAdapter;
+    }
+
+    @Override
+    public FragmentManager getTheFragmentManager() {
+        return getSupportFragmentManager();
     }
 }

@@ -1,4 +1,4 @@
-package sudoku.cobyapps.com.sudoku.Fragments;
+package sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

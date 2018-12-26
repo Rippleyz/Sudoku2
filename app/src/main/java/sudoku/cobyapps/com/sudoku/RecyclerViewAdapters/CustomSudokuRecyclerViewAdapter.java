@@ -1,4 +1,4 @@
-package sudoku.cobyapps.com.sudoku;
+package sudoku.cobyapps.com.sudoku.RecyclerViewAdapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import sudoku.cobyapps.com.sudoku.R;
 
 public class CustomSudokuRecyclerViewAdapter extends RecyclerView.Adapter {
     private static final String LOWER_BOUND_OF_NUMBER_OF_UNKNOWNS = "Lower bound of unknowns : ";
