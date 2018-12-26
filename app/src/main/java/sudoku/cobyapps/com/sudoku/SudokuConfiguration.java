@@ -2,44 +2,44 @@ package sudoku.cobyapps.com.sudoku;
 
 import java.util.Random;
 
-public class BuildSudoku {
+public class SudokuConfiguration {
 
     private int numberOfUnknownsLowerBound;
     private int numberOfUnknownsUpperBound;
     private int difficultyLowerBoundary;
     private int difficultyUpperBoundary;
 
-    private BuildSudoku(Builder builder) {
+    private SudokuConfiguration(Builder builder) {
         this.numberOfUnknownsLowerBound = builder.numberOfUnknownsLowerBound;
         this.numberOfUnknownsUpperBound = builder.numberOfUnknownsUpperBound;
-        this.difficultyLowerBoundary = builder.difficultyLowerBoundary;
-        this.difficultyUpperBoundary = builder.difficultyUpperBoundary;
+        this.difficultyLowerBoundary = builder.difficultyLowerBound;
+        this.difficultyUpperBoundary = builder.difficultyUpperBound;
     }
 
     public static class Builder {
 
         private int numberOfUnknownsLowerBound;
         private int numberOfUnknownsUpperBound;
-        private int difficultyLowerBoundary;
-        private int difficultyUpperBoundary;
+        private int difficultyLowerBound;
+        private int difficultyUpperBound;
 
         private Random random = new Random();
 
 
         // TODO: 20.12.2018 edit numbers
         public Builder() {
-            numberOfUnknownsLowerBound = 20;
-            numberOfUnknownsUpperBound = 40;
-            difficultyLowerBoundary = 5;
-            difficultyUpperBoundary = 120;
+            numberOfUnknownsLowerBound = 1;
+            numberOfUnknownsUpperBound = 64;
+            difficultyLowerBound = 0;
+            difficultyUpperBound = Integer.MAX_VALUE;
         }
 
         // TODO: 20.12.2018 edit numbers
         public Builder allRandom(){
-            this.numberOfUnknownsLowerBound = random.nextInt(10) + 20;
-            this.numberOfUnknownsUpperBound = random.nextInt(21) + 40;
-            this.difficultyLowerBoundary = random.nextInt(16) + 5;
-            this.difficultyUpperBoundary = random.nextInt(81) + 40;
+            this.numberOfUnknownsLowerBound = random.nextInt(numberOfUnknownsLowerBound+1);
+            this.numberOfUnknownsUpperBound = random.nextInt(numberOfUnknownsUpperBound+1);
+            this.difficultyLowerBound = random.nextInt(difficultyLowerBound+1);
+            this.difficultyUpperBound = random.nextInt(difficultyUpperBound+1);
             return this;
         }
 
@@ -63,23 +63,23 @@ public class BuildSudoku {
 
         public Builder withDifficultyLowerBound(int difficultyLowerBound) throws Exception {
             if (difficultyLowerBound >= 0) {
-                this.difficultyLowerBoundary = difficultyLowerBound;
+                this.difficultyLowerBound = difficultyLowerBound;
             } else
                 throw new Exception("Difficulty must be positive");
             return this;
         }
 
         public Builder withDifficultyUpperBound(int difficultyUpperBound) throws Exception {
-            if (difficultyUpperBoundary >= 0) {
-                this.difficultyUpperBoundary = difficultyUpperBound;
+            if (this.difficultyUpperBound >= 0) {
+                this.difficultyUpperBound = difficultyUpperBound;
             } else {
                 throw new Exception("Difficulty must be positive");
             }
             return this;
         }
 
-        public BuildSudoku build() {
-            return new BuildSudoku(this);
+        public SudokuConfiguration build() {
+            return new SudokuConfiguration(this);
         }
     }
 }
