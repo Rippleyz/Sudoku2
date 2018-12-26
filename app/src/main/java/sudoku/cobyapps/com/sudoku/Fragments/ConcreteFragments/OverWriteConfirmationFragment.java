@@ -30,7 +30,8 @@ public class OverWriteConfirmationFragment extends DialogFragmentWithTwoButtons 
 
     @Override
     protected void onLeftButtonClick() {
-
+        interFragmentCommunicator.saveCurrentSudokuToDatabase();
+        dismiss();
     }
 
     @Override

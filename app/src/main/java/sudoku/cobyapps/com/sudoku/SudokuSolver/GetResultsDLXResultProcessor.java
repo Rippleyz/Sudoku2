@@ -1,9 +1,10 @@
 package sudoku.cobyapps.com.sudoku.SudokuSolver;
 
-import au.id.bjf.dlx.DLXResult;
-import au.id.bjf.dlx.DLXResultProcessor;
 
 import java.util.ArrayList;
+
+import sudoku.cobyapps.com.sudoku.dlx.DLXResult;
+import sudoku.cobyapps.com.sudoku.dlx.DLXResultProcessor;
 
 public class GetResultsDLXResultProcessor implements DLXResultProcessor {
     private int numSolutions = 0;

@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         InterFragmentCommunicator, SudokuDataConverter{
     private SudokuGridView sudokuGridView;
     private boolean isOnNote = false;
-    private int next;
     private static final String KEY_CURRENT_SUDOKU = "KEY_CURRENT_SUDOKU";
     private static final String KEY_IS_GIVEN = "KEY_IS_GIVEN";
     private static final String KEY_NOTES = "KEY_NOTES";
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = null;
         SudokuDataHolder dataHolder = new SudokuDataHolder();
-        next = 1;
         SharedPreferences sharedPreferences = getSharedPreferences("sudoku.cobyapps.com.sudoku", MODE_PRIVATE);
         SudokuCellDataComponent [][] currentSudoku = new SudokuCellDataComponent[9][9];
         if(sharedPreferences.getString(KEY_CURRENT_SUDOKU,null)==null){
@@ -291,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return true;
     }
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if(currentMenu == MENU_ON_CUSTOM_DIFFICULTY){
@@ -372,4 +369,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public FragmentManager getTheFragmentManager() {
         return getSupportFragmentManager();
     }
-}
+/*
+@Override
+    public SudokuCellDataComponent[][] getSudokuFromCursor(Cursor cursor, int position) {
+        cursor.moveToPosition(position);
+        String sudoku = cursor.getString(DatabaseAdapter.INDEX_SUDOKU);
+        String isGivens = cursor.getString(DatabaseAdapter.INDEX_IS_GIVENS);
+        String notes = cursor.getString(DatabaseAdapter.INDEX_NOTES);
+
+    }
+    private SudokuCellDataComponent [][] getSudokuCellDataComponentFromDataStrings (String sudoku, String isGivens, String notes){
+        String [] notesForEachCell=null;
+        if(notes!=null){
+            notesForEachCell = notes.split(" / ");
+            notesForEachCell[80] = notesForEachCell[80]
+                    .replace("/", "")
+                    .replace(" ", "");
+        }
+        for(int i = 0; i < 81 ; i++){
+            SudokuCellDataComponent sudokuCellDataComponent = new SudokuCellDataComponent();
+            if(isGivens != null && isGivens.charAt(i)=='1'){
+                sudokuCellDataComponent.setIsGiven(true);
+            }else{
+                sudokuCellDataComponent.setIsGiven(false);
+            }
+            if(notesForEachCell!=null){
+                sudokuCellDataComponent.setNotes(notesForEachCell[i]);
+            }
+            sudokuCellDataComponent.setNumber(Integer.parseInt(sudoku.charAt(i)+""));
+            sudoku[i/9][i%9] = sudokuCellDataComponent;
+        }
+    }
+ */
+
+    }

@@ -8,4 +8,5 @@ public interface InterFragmentCommunicator {
     void saveCurrentSudokuToDatabase ();
     DatabaseAdapter getDatabaseAdapter ();
     FragmentManager getTheFragmentManager ();
+    //SudokuCellDataComponent [][] getSudokuFromCursor(Cursor cursor, int position);
 }

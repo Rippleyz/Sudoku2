@@ -13,10 +13,10 @@ public class MyDatePicker {
         Locale current = context.getResources().getConfiguration().locale;
         Date date = Calendar.getInstance().getTime();
         if (current.getCountry().equals(Locale.US.toString())) {
-            DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy, hh:mm:ss");
             return dateFormat.format(date);
         } else {
-            DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy, hh:mm:ss");
             return dateFormat.format(date);
         }
     }

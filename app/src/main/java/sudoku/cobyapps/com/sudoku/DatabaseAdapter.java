@@ -16,12 +16,19 @@ public class DatabaseAdapter {
     private static SQLiteDatabase database;
     private static SQLiteHelper helper;
     private static DatabaseAdapter databaseAdapter = new DatabaseAdapter();
-    private Context context;
+    private static Context mainContext;
+    public static final int INDEX_ID = 0;
+    public static final int INDEX_SUDOKU = 1;
+    public static final int INDEX_NOTES = 2;
+    public static final int INDEX_IS_GIVENS = 3;
+    public static final int INDEX_DATE = 4;
+    public static final int INDEX_TIME_ELAPSED = 5;
     private DatabaseAdapter (){
 
     }
 
     public static DatabaseAdapter getInstance(Context context){
+        mainContext = context;
         helper = new SQLiteHelper(context);
         database = helper.getWritableDatabase();
         return databaseAdapter;
@@ -58,8 +65,9 @@ public class DatabaseAdapter {
         contentValues.put(SQLiteHelper.COLUMN_SUDOKU, databaseDataHolder.getSudoku());
         contentValues.put(SQLiteHelper.COLUMN_IS_GIVENS, databaseDataHolder.getIsGivens());
         contentValues.put(SQLiteHelper.COLUMN_NOTES, databaseDataHolder.getNotes());
-        contentValues.put(SQLiteHelper.COLUMN_DATE, MyDatePicker.getCurrentDate());
-        //TODO : GET TIME, TIME ELAPSED & INSERT IT
+        contentValues.put(SQLiteHelper.COLUMN_DATE, MyDatePicker.getCurrentDate(mainContext));
+        contentValues.put(SQLiteHelper.COLUMN_TIME_ELAPSED, "0");
+        //TODO :TIME ELAPSED REPLACE WITH 0
         return contentValues;
     }
     static class SQLiteHelper extends SQLiteOpenHelper {

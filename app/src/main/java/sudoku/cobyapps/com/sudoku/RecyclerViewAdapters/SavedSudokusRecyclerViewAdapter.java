@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import sudoku.cobyapps.com.sudoku.DatabaseAdapter;
 import sudoku.cobyapps.com.sudoku.InterFragmentCommunicator;
 import sudoku.cobyapps.com.sudoku.MainActivity;
 import sudoku.cobyapps.com.sudoku.R;
@@ -31,7 +33,13 @@ public class SavedSudokusRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Holder myHolder = (Holder)holder;
         cursor.moveToPosition(position);
-        myHolder.getTextView().setText(cursor.getString(0));
+        myHolder.getTextView().setText(cursor.getString(DatabaseAdapter.INDEX_DATE));
+        myHolder.getRelativeLayout().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -39,12 +47,18 @@ public class SavedSudokusRecyclerViewAdapter extends RecyclerView.Adapter {
     }
     class Holder extends RecyclerView.ViewHolder{
         private TextView textView;
+        private RelativeLayout relativeLayout;
         public Holder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
+            relativeLayout = itemView.findViewById(R.id.relative_layout);
         }
         public TextView getTextView() {
             return textView;
+        }
+
+        public RelativeLayout getRelativeLayout() {
+            return relativeLayout;
         }
     }
 }
