@@ -27,7 +27,11 @@ public abstract class FragmentWithRecyclerView extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         interFragmentCommunicator = (MainActivity)getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setAdapter(getRecyclerViewAdapter());
+        try {
+            recyclerView.setAdapter(getRecyclerViewAdapter());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         super.onActivityCreated(savedInstanceState);
@@ -35,5 +39,5 @@ public abstract class FragmentWithRecyclerView extends Fragment {
     public RecyclerView.Adapter getCustomSudokuRecyclerViewAdapter(){
         return recyclerViewAdapter;
     }
-    protected abstract RecyclerView.Adapter getRecyclerViewAdapter();
+    protected abstract RecyclerView.Adapter getRecyclerViewAdapter() throws Exception;
 }

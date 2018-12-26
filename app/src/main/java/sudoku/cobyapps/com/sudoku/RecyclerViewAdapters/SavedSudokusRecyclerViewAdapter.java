@@ -3,6 +3,8 @@ package sudoku.cobyapps.com.sudoku.RecyclerViewAdapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import sudoku.cobyapps.com.sudoku.DatabaseAdapter;
+import sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments.SavedSudokusFragment;
 import sudoku.cobyapps.com.sudoku.InterFragmentCommunicator;
 import sudoku.cobyapps.com.sudoku.MainActivity;
 import sudoku.cobyapps.com.sudoku.R;
@@ -20,8 +23,8 @@ public class SavedSudokusRecyclerViewAdapter extends RecyclerView.Adapter {
     private Cursor cursor;
     private InterFragmentCommunicator interFragmentCommunicator;
     private LayoutInflater inflater;
-    private static final int STATE_ON_OVERWRITE = 0;
-    private static final int STATE_ON_LOAD = 1;
+    public static final int STATE_ON_OVERWRITE = 0;
+    public static final int STATE_ON_LOAD = 1;
     private int state;
     public SavedSudokusRecyclerViewAdapter(Context context, int state) throws Exception {
         interFragmentCommunicator = (MainActivity)context;
@@ -49,7 +52,6 @@ public class SavedSudokusRecyclerViewAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 if(state == STATE_ON_OVERWRITE){
 
-
                 }else if (state == STATE_ON_LOAD){
                     DatabaseAdapter databaseAdapter = interFragmentCommunicator.getDatabaseAdapter();
                     int databaseId = myHolder.getDatabaseId();
@@ -62,8 +64,12 @@ public class SavedSudokusRecyclerViewAdapter extends RecyclerView.Adapter {
                             [][] sudokuCellDataComponents
                             = interFragmentCommunicator
                             .getSudokuCellDataComponentFromDataStrings(sudoku, notes, isGivens);
-
-
+                    interFragmentCommunicator.setCurrentSudoku(sudokuCellDataComponents);
+                    interFragmentCommunicator.invalidateCurrentSudoku();
+                    FragmentManager fragmentManager = interFragmentCommunicator.getTheFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.remove(fragmentManager.findFragmentByTag(SavedSudokusFragment.TAG));
+                    fragmentTransaction.commit();
                 }
             }
         });

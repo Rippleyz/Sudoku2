@@ -11,5 +11,6 @@ public interface InterFragmentCommunicator {
     FragmentManager getTheFragmentManager ();
     SudokuCellDataComponent [][] getSudokuCellDataComponentFromDataStrings (String sudoku, String isGivens, String notes);
     void setCurrentSudoku (SudokuCellDataComponent [][] dataComponents);
+    void invalidateCurrentSudoku();
 
 }

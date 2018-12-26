@@ -7,8 +7,9 @@ import sudoku.cobyapps.com.sudoku.RecyclerViewAdapters.SavedSudokusRecyclerViewA
 
 public class SavedSudokusFragment extends FragmentWithRecyclerView {
     public static final String TAG = "SavedSudokusFragment";
+    public static final String KEY_RECYCLER_VIEW_STATE = "KEY_RECYCLER_VIEW_STATE";
     @Override
-    protected RecyclerView.Adapter getRecyclerViewAdapter(){
-        return new SavedSudokusRecyclerViewAdapter(getActivity());
+    protected RecyclerView.Adapter getRecyclerViewAdapter() throws Exception {
+        return new SavedSudokusRecyclerViewAdapter(getActivity(), getArguments().getInt(KEY_RECYCLER_VIEW_STATE));
     }
 }

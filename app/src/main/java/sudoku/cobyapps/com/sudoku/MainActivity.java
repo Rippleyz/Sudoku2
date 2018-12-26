@@ -400,4 +400,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setCurrentSudoku(SudokuCellDataComponent[][] dataComponents) {
         sudokuGridView.getDataHolder().setGrid(dataComponents);
     }
+
+    @Override
+    public void invalidateCurrentSudoku() {
+        sudokuGridView.invalidate();
+    }
 }

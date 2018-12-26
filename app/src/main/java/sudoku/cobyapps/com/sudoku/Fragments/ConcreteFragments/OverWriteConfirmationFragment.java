@@ -1,11 +1,13 @@
 package sudoku.cobyapps.com.sudoku.Fragments.ConcreteFragments;
 
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import sudoku.cobyapps.com.sudoku.Fragments.AbstractFragments.DialogFragmentWithTwoButtons;
 import sudoku.cobyapps.com.sudoku.R;
+import sudoku.cobyapps.com.sudoku.RecyclerViewAdapters.SavedSudokusRecyclerViewAdapter;
 import sudoku.cobyapps.com.sudoku.SimpleFragmentFactory;
 
 public class OverWriteConfirmationFragment extends DialogFragmentWithTwoButtons {
@@ -36,9 +38,12 @@ public class OverWriteConfirmationFragment extends DialogFragmentWithTwoButtons 
 
     @Override
     protected void onRightButtonClick() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(SavedSudokusFragment.KEY_RECYCLER_VIEW_STATE, SavedSudokusRecyclerViewAdapter.STATE_ON_OVERWRITE);
         SavedSudokusFragment savedSudokusFragment =
                 (SavedSudokusFragment)
                         SimpleFragmentFactory.createFragment(SimpleFragmentFactory.FRAGMENT_SAVED_SUDOKUS);
+        savedSudokusFragment.setArguments(bundle);
         FragmentManager fragmentManager = interFragmentCommunicator.getTheFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.main_layout, savedSudokusFragment, SavedSudokusFragment.TAG);
