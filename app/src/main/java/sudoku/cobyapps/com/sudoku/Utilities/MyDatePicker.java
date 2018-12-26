@@ -8,10 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import sudoku.cobyapps.com.sudoku.MainActivity;
-
-public class DatePicker {
-
+public class MyDatePicker {
     public static String getCurrentDate(Context context) {
         Locale current = context.getResources().getConfiguration().locale;
         Date date = Calendar.getInstance().getTime();

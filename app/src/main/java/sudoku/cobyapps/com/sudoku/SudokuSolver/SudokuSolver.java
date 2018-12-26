@@ -1,4 +1,4 @@
-package sudoku.cobyapps.com.sudoku;
+package sudoku.cobyapps.com.sudoku.SudokuSolver;
 
 /**
  * A Sudoku solver

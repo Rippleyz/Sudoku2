@@ -10,10 +10,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import sudoku.cobyapps.com.sudoku.Utilities.MyDatePicker;
+
 public class DatabaseAdapter {
     private static SQLiteDatabase database;
     private static SQLiteHelper helper;
     private static DatabaseAdapter databaseAdapter = new DatabaseAdapter();
+    private Context context;
     private DatabaseAdapter (){
 
     }
@@ -55,6 +58,7 @@ public class DatabaseAdapter {
         contentValues.put(SQLiteHelper.COLUMN_SUDOKU, databaseDataHolder.getSudoku());
         contentValues.put(SQLiteHelper.COLUMN_IS_GIVENS, databaseDataHolder.getIsGivens());
         contentValues.put(SQLiteHelper.COLUMN_NOTES, databaseDataHolder.getNotes());
+        contentValues.put(SQLiteHelper.COLUMN_DATE, MyDatePicker.getCurrentDate());
         //TODO : GET TIME, TIME ELAPSED & INSERT IT
         return contentValues;
     }
@@ -68,7 +72,6 @@ public class DatabaseAdapter {
         private static final String COLUMN_IS_GIVENS = "COLUMN_IS_GIVENS";
         private static final String COLUMN_DATE = "COLUMN_DATE";
         private static final String COLUMN_TIME_ELAPSED = "COLUMN_TIME_ELAPSED";
-
         public SQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
             super(context, NAME_DATABASE, null, VERSION_DATABASE);
         }
